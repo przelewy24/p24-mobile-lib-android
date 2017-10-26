@@ -60,7 +60,7 @@ Oraz aktywność `PaymentSettingsActivity`:
 ```xml
 <activity android:name="pl.przelewy24.p24lib.settings.PaymentSettingsActivity"
           android:configChanges="orientation|keyboard|keyboardHidden"
-          android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
+          android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 ```
 
 __Wszystkie Activity w bibliotece dziedziczą po AppCompatActivity, dlatego należy do nich stosować style z grupy „Theme.AppCompat.*” i pochodne__
@@ -72,7 +72,7 @@ android:configChanges="orientation|keyboard|keyboardHidden"
 ```
 Przykładowo plik `AndroidManifext.xml` powinien wyglądać tak:
 
-```javascript
+```xml
 
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -184,22 +184,19 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
         if (resCode == RESULT_OK) {
             TransferResult result = TransferActivity.parseResult(data);
 
-            switch (result) {
-                case SUCCESS:
-                    // success
-                    break;
-                case ERROR:
-                    //error
-                    break;
+            if (result.isSuccess()) {
+                // success
+            } else {
+                //error
+                String errorCode = result.getErrorCode();
             }
-
         } else {
             //cancel
         }
     }
 }
 ```
-`TransferActivity` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po uzyskaniu statusu `SUCCESS` aplikacja powinna odpytać własny backend o status transakcji.
+`TransferActivity` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po uzyskaniu statusu `isSuccess()` aplikacja powinna odpytać własny backend o status transakcji.
 
 ## 3. Wywołanie transakcji trnRequest
 
@@ -221,7 +218,7 @@ Należy ustawić parametry transakcji podając token zarejestrowanej wcześn
 
 ```java
 TrnRequestParams params = TrnRequestParams
-                      .create(„XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX”)
+                      .create("XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX")
                       .setSandbox(true)
                       .setSettingsParams(settingsParams);
 ```

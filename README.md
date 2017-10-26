@@ -12,7 +12,7 @@ The first step is to set the value `minSdkVersion=14` in file `build.gradle`
 
 In the Android Studio environment, it is possible to add a library module by using the command: „File → New → New module...”. From the list „New module” select „Import .JAR or .AAR Package” and click „Next”. In the field „File name” provide access path to file `p24Lib.aar`. As a „Subproject name”, provide „p24Lib” and click „Finish”.
 
-he next step is to add a dependency to the created library module by modifying the file `build.gradle` and placing the following entry in the section „dependencies”:
+The next step is to add a dependency to the created library module by modifying the file `build.gradle` and placing the following entry in the section „dependencies”:
 
 `compile project(':p24lib')`
 
@@ -60,12 +60,12 @@ and `PaymentSettingsActivity`:
 ```xml
 <activity android:name="pl.przelewy24.p24lib.settings.PaymentSettingsActivity"
           android:configChanges="orientation|keyboard|keyboardHidden"
-          android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
+          android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 ```
 
 __All Activities in the library draw on the AppCompatActivity, which is why  „Theme.AppCompat.*” group styles as well as derivative styles should be used__
 
-n the case of default Activity settings, the WebView will get reloaded during the revolution of the library display screen, which may cause a return from the bank’s website to the list of payment forms and render further transaction processing impossible. In order to prevent the reloading of the library window, the following parameter must be set:
+In the case of default Activity settings, the WebView will get reloaded during the rotation of the library display screen, which may cause a return from the bank’s website to the list of payment forms and render further transaction processing impossible. In order to prevent the reloading of the library window, the following parameter must be set:
 
 ```xml
 android:configChanges="orientation|keyboard|keyboardHidden"
@@ -151,7 +151,7 @@ Optionally, the transaction call may be set at the Sandbox server:
 params.setSandbox(true);
 ```
 
-Yet another option is to add saved library settings for bank websites (mobile styles at the banks’ websites – turned on by default, Should the library remember logins and passwords?, Should the library automatically paste sms passwords to the transaction confirmation form at the bank):
+Yet another option is to add library settings for bank websites (mobile styles at the banks’ websites – turned on by default, should the library remember logins and passwords, should the library automatically paste sms passwords to the transaction confirmation form at the bank page):
 
 ```java
 SettingsParams settingsParams = new SettingsParams();
@@ -161,7 +161,7 @@ settingsParams.setReadSmsPasswords(true);
 params.setSettingsParams(settingsParams);
 ```
 
-In case  `setReadSmsPasswords` is set as `true`, the following should be added to the manifest:
+In case `setReadSmsPasswords` is set as `true`, the following should be added to the manifest:
 
 ```xml
 <uses-permission android:name="android.permission.RECEIVE_SMS"/>
@@ -174,7 +174,7 @@ Intent intent = TransferActivity.getIntentForTrnDirect(getApplicationContext(), 
 activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 ```
 
-In order to serve the transaction result, one must modify `Activity.onActivityResult`:
+In order to serve the transaction result, one must override `Activity.onActivityResult`:
 
 ```java
 @Override
@@ -184,27 +184,24 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
         if (resCode == RESULT_OK) {
             TransferResult result = TransferActivity.parseResult(data);
 
-            switch (result) {
-                case SUCCESS:
-                    // success
-                    break;
-                case ERROR:
-                    //error
-                    break;
+            if (result.isSuccess()) {
+                // success
+            } else {
+                //error
+                String errorCode = result.getErrorCode();
             }
-
         } else {
             //cancel
         }
     }
 }
 ```
-`TransferActivity` yields only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `SUCCESS` status is obtained, the application should inquire its own backend about the transaction status.
+`TransferActivity` returns only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `isSuccess()` status is obtained, the application should call its own backend to check the transaction status.
 
 
 ## 3. trnRequest transaction call
 
-During the registration with the "trnRegister" method, parameter p24_mobile_lib=1 should be provided, which allows Przelewy24 to classify the transaction as a mobile transaction. A Token registered without this parameter will not work in the mobile application (an error will appear upon return to the bank and the library file will not detect payment completion).
+During the registration with the "trnRegister" method, parameter `p24_mobile_lib=1` should be provided, which allows Przelewy24 to classify the transaction as a mobile transaction. A Token registered without this parameter will not work in the mobile application (an error will appear upon return to the bank and the library file will not detect payment completion).
 
 **NOTE!**
 
@@ -213,16 +210,16 @@ During the registration with the "trnRegister" method, parameter p24_mobile_lib=
 - `p24_method` – if a given transaction in the library is to have a specific, preset method of payment, this method must be selected during the registration
 - `p24_url_status` - the address to be used for transaction verification by the partner’s server once the payment process in the mobile library is finished
 
-The transaction parameters must be set using the token of a transaction registered earlier. Alternatively, the sandbox server and bank configuration may be set:
+The transaction parameters must be set using the token of a transaction registered earlier. Optionally, the sandbox server and bank configuration may be set:
 
 ```java
 TrnRequestParams params = TrnRequestParams
-                      .create(„XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX”)
+                      .create("XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX")
                       .setSandbox(true)
                       .setSettingsParams(settingsParams);
 ```
 
-Next, `Intent` should be created to call transaction `Activity` and run it:
+Next, create `Intent` to call transaction `Activity` and run it:
 
 ```java
 Intent intent = TransferActivity.getIntentForTrnRequest(getApplicationContext(), params);
