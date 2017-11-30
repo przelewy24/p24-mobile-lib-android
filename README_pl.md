@@ -4,19 +4,23 @@ Ogólne informacje o działaniu bibliotek mobilnych w systemie Przelewy24 znajdz
 
 - [https://github.com/przelewy24/p24-mobile-lib-doc](https://github.com/przelewy24/p24-mobile-lib-doc)
 
+Przykład implementacji biblioteki:
+
+- [https://github.com/przelewy24/p24-mobile-lib-android-example](https://github.com/przelewy24/p24-mobile-lib-android-example)
+
 ## 1. Konfiguracja projektu
 
 Konfigurację należy rozpocząć od ustawienia wartości `minSdkVersion=14` w pliku `build.gradle`
 
 ### Dodawanie zależności
 
-W środowisku Android Studio możliwe jest doadnie modułu biblioteki poprzez polecenie: „File → New → New module...”. Z listy „New module” wybrać „Import .JAR or .AAR Package” i kliknąć „Next”. W polu „File name” podać ścieżkę do pliku „p24Lib.aar”, jako „Subproject name” podać „p24Lib” i kliknąć „Finish”.
+W środowisku Android Studio możliwe jest doadnie modułu biblioteki poprzez polecenie: „File → New → New module...”. Z listy „New module” wybrać „Import .JAR or .AAR Package” i kliknąć „Next”. W polu „File name” podać ścieżkę do pliku „p24Lib.aar”, jako „Subproject name” podać „p24Lib” i kliknąć „Finish”.
 
-Kolejny krok to dodanie zależności do stworzonego modułu biblioteki poprzez modyfikację pliku `build.gradle` i umieszczenie w sekcji „dependencies” wpisu:
+Kolejny krok to dodanie zależności do stworzonego modułu biblioteki poprzez modyfikację pliku `build.gradle` i umieszczenie w sekcji „dependencies” wpisu:
 
 `compile project(':p24lib')`
 
-Biblioteka wykorzystuje bibliotekę AppCompat v7, dlatego należy różnież dodać zależność:
+Biblioteka wykorzystuje bibliotekę AppCompat v7, dlatego należy różnież dodać zależność:
 
 `compile 'com.android.support:appcompat-v7:26.+'`
 
@@ -34,7 +38,7 @@ dependencies {
 
 ### Definiowanie pliku AndroidManifest
 
-Do pliku `AndroidManifest.xml`, w węźle `manifest` dodać:
+Do pliku `AndroidManifest.xml`, w węźle `manifest` dodać:
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET"/>
@@ -47,7 +51,7 @@ W sytuacji kiedy wykorzystujemy funkcję wklejania kodu SMS należy również do
 <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 ```
 
-Następnie w węźle `application` dodać aktywność `TransferActivity`:
+Następnie w węźle `application` dodać aktywność `TransferActivity`:
 
 ```xml
 <activity android:name=„pl.przelewy24.p24lib.transfer.TransferActivity"
@@ -55,7 +59,7 @@ Następnie w węźle `application` dodać aktywność `TransferActivity`:
           android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
 ```
 
-Oraz aktywność `PaymentSettingsActivity`:
+Oraz aktywność `PaymentSettingsActivity`:
 
 ```xml
 <activity android:name="pl.przelewy24.p24lib.settings.PaymentSettingsActivity"
@@ -63,9 +67,9 @@ Oraz aktywność `PaymentSettingsActivity`:
           android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 ```
 
-__Wszystkie Activity w bibliotece dziedziczą po AppCompatActivity, dlatego należy do nich stosować style z grupy „Theme.AppCompat.*” i pochodne__
+__Wszystkie Activity w bibliotece dziedziczą po AppCompatActivity, dlatego należy do nich stosować style z grupy „Theme.AppCompat.*” i pochodne__
 
-Przy domyślnych ustawieniach Activity podczas obrotu ekranu biblioteki nastąpi przeładowanie WebView, co może powodować powrót ze strony banku do listy form płatności i uniemożliwić sfinalizowanie transakcji. Aby okno biblioteki nie przeładowywało się konieczne jest ustawienie parametru:
+Przy domyślnych ustawieniach Activity podczas obrotu ekranu biblioteki nastąpi przeładowanie WebView, co może powodować powrót ze strony banku do listy form płatności i uniemożliwić sfinalizowanie transakcji. Aby okno biblioteki nie przeładowywało się konieczne jest ustawienie parametru:
 
 ```xml
 android:configChanges="orientation|keyboard|keyboardHidden"
@@ -108,7 +112,7 @@ Przykładowo plik `AndroidManifext.xml` powinien wyglądać tak:
 
 ## 2. Wywołanie transakcji trnDirect
 
-W tym celu należy ustawić parametry transakcji korzystając z klasy buildera, podając Merchant Id i klucz do CRC:
+W tym celu należy ustawić parametry transakcji korzystając z klasy buildera, podając Merchant Id i klucz do CRC:
 
 ```java
 TransactionParams transactionParams = new TransactionParams.Builder()
@@ -139,19 +143,19 @@ builder.urlStatus("https://XXXXXX")
        .transferLabel("transfer label")
        .shipping(0);
 ```
-Następnie stworzyć obiekt z parametrami wywołania transakcji, odpowiedni dla danej metody:
+Następnie stworzyć obiekt z parametrami wywołania transakcji, odpowiedni dla danej metody:
 
 ```java
 TrnDirectParams params = TrnDirectParams.create(transactionParams);
 ```
 
-Opcjonalne można ustawić wywołanie transakcji na serwer Sandbox:
+Opcjonalne można ustawić wywołanie transakcji na serwer Sandbox:
 
 ```java
 params.setSandbox(true);
 ```
 
-Również opcjonalne można dodać ustawienia zachowania biblioteki dla stron banków (style mobile na stronach banków – domyślnie włączone, czy biblioteka ma zapamiętywać logi i hasło do banków, czy biblioteka ma automatycznie przeklejać hasła sms do formularza potwierdzenia transakcji w banku):
+Również opcjonalne można dodać ustawienia zachowania biblioteki dla stron banków (style mobile na stronach banków – domyślnie włączone, czy biblioteka ma zapamiętywać logi i hasło do banków, czy biblioteka ma automatycznie przeklejać hasła sms do formularza potwierdzenia transakcji w banku):
 
 ```java
 SettingsParams settingsParams = new SettingsParams();
@@ -161,7 +165,7 @@ settingsParams.setReadSmsPasswords(true);
 params.setSettingsParams(settingsParams);
 ```
 
-W przypadku ustawienia `setReadSmsPasswords` na `true` należy również dodać do manifestu:
+W przypadku ustawienia `setReadSmsPasswords` na `true` należy również dodać do manifestu:
 
 ```xml
 <uses-permission android:name="android.permission.RECEIVE_SMS"/>
@@ -174,7 +178,7 @@ Intent intent = TransferActivity.getIntentForTrnDirect(getApplicationContext(), 
 activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 ```
 
-Aby obsłużyć rezultat transakcji należy rozszerzyć metodę `Activity.onActivityResult`:
+Aby obsłużyć rezultat transakcji należy rozszerzyć metodę `Activity.onActivityResult`:
 
 ```java
 @Override
@@ -196,11 +200,11 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
     }
 }
 ```
-`TransferActivity` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po uzyskaniu statusu `isSuccess()` aplikacja powinna odpytać własny backend o status transakcji.
+`TransferActivity` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po uzyskaniu statusu `isSuccess()` aplikacja powinna odpytać własny backend o status transakcji.
 
 ## 3. Wywołanie transakcji trnRequest
 
-Podczas rejestracji transakcji metodą "trnRegister" należy podać parametr `p24_mobile_lib=1`, dzięki czemu system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
+Podczas rejestracji transakcji metodą "trnRegister" należy podać parametr `p24_mobile_lib=1`, dzięki czemu system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
 
 **UWAGA!**
 
@@ -214,7 +218,7 @@ bibliotece przy wejściu bezpośrednio z parametrami)
 dana metoda płatności, należy ustawić ją w tym parametrze przy rejestracji
 - `p24_url_status` - adres, który zostanie wykorzystany do weryfikacji transakcji przez serwer partnera po zakończeniu procesu płatności w bibliotece mobilnej
 
-Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox oraz konfigurację banków:
+Należy ustawić parametry transakcji podając token zarejestrowanej wcześniej transakcji, opcjonalnie można ustawić serwer sandbox oraz konfigurację banków:
 
 ```java
 TrnRequestParams params = TrnRequestParams
@@ -223,35 +227,35 @@ TrnRequestParams params = TrnRequestParams
                       .setSettingsParams(settingsParams);
 ```
 
-Następnie należy stworzyć `Intent` do wywołania `Activity` transakcji i uruchomić go:
+Następnie należy stworzyć `Intent` do wywołania `Activity` transakcji i uruchomić go:
 
 ```java
 Intent intent = TransferActivity.getIntentForTrnRequest(getApplicationContext(), params);
 activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 ```
 
-Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
+Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
 ## 4. Wywołanie transakcji Ekspres
 
-Należy ustawić parametry transakcji podając url uzyskany podczas rejestracji transakcji w systemie Ekspres. Transakcja musi być zarejestrowana jako mobilna.
+Należy ustawić parametry transakcji podając url uzyskany podczas rejestracji transakcji w systemie Ekspres. Transakcja musi być zarejestrowana jako mobilna.
 
 ```java
 ExpressParams params = ExpressParams.create(expresTransactionUrl);
 ```
 
-Następnie należy stworzyć Intent do wywołania Activity transakcji i uruchomić go:
+Następnie należy stworzyć Intent do wywołania Activity transakcji i uruchomić go:
 
 ```java
 Intent intent = TransferActivity.getIntentForExpress(getApplicationContext(), params);
 activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 ```
 
-Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
+Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
 ## 5. Wywołanie transakcji z Pasażem 2.0
 
-Należy ustawić parametry transakcji identycznie jak dla wywołania "trnDirect", dodając odpowiednio przygotowany obiekt koszyka:
+Należy ustawić parametry transakcji identycznie jak dla wywołania "trnDirect", dodając odpowiednio przygotowany obiekt koszyka:
 
 ```java
 PassageCart passageCart = PassageCart.create();

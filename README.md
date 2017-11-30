@@ -4,6 +4,10 @@ For general information on the operation of Przelewy24 mobile libraries, visit:
 
 - [https://github.com/przelewy24/p24-mobile-lib-doc](https://github.com/przelewy24/p24-mobile-lib-doc)
 
+To see implementation example please check the example project:
+
+- [https://github.com/przelewy24/p24-mobile-lib-android-example](https://github.com/przelewy24/p24-mobile-lib-android-example)
+
 ## 1. Project configuration
 
 The first step is to set the value `minSdkVersion=14` in file `build.gradle`
