@@ -1,7 +1,11 @@
+Version 3.0.7
+
+- memory optimalization
+
 Version 3.0.5
 
 - Fixes for Deutsche Bank
-- Add trRegister to public API
+- Add trnRegister method
 
 Version 3.0.3
 
