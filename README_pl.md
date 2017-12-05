@@ -204,7 +204,11 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
 
 ## 3. Wywołanie transakcji trnRequest
 
-Podczas rejestracji transakcji metodą "trnRegister" należy podać parametr `p24_mobile_lib=1`, dzięki czemu system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
+Podczas rejestracji transakcji metodą "trnRegister" należy podać dodatkowe parametry:
+- `p24_mobile_lib=1`
+- `p24_sdk_version=X` – gdzie X jest wersją biblioteki mobilnej otrzymana w wywołaniu metody `P24SdkVersion.value()`
+
+Dzięki tym parametrom system Przelewy24 będzie wiedział że powinien traktować transakcję jako mobilną. Token zarejestrowany bez tego parametru nie zadziała w bibliotece mobilnej (wystąpi błąd po powrocie z banku i okno biblioteki nie wykryje zakończenia płatności).
 
 **UWAGA!**
 

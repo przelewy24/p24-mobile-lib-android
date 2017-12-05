@@ -205,7 +205,11 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
 
 ## 3. trnRequest transaction call
 
-During the registration with the "trnRegister" method, parameter `p24_mobile_lib=1` should be provided, which allows Przelewy24 to classify the transaction as a mobile transaction. A Token registered without this parameter will not work in the mobile application (an error will appear upon return to the bank and the library file will not detect payment completion).
+During the registration with the "trnRegister" method, additional parameters should be provided:
+- `p24_mobile_lib=1`
+- `p24_sdk_version=X` – where X is a moibile lib version provided by `P24SdkVersion.value()` method
+
+This parameters  allows Przelewy24 to classify the transaction as a mobile transaction. A Token registered without this parameter will not work in the mobile application (an error will appear upon return to the bank and the library file will not detect payment completion).
 
 **NOTE!**
 
