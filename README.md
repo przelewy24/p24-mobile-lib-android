@@ -45,26 +45,12 @@ Add the following to `AndroidManifest.xml` file:
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```
 
-In case the SMS code paste function is used, add also:
-
-```xml
-<uses-permission android:name="android.permission.RECEIVE_SMS"/>
-```
-
 Next, in `application` section, add `TransferActivity`:
 
 ```xml
 <activity android:name=„pl.przelewy24.p24lib.transfer.TransferActivity"
           android:configChanges="orientation|keyboard|keyboardHidden"
           android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
-```
-
-and `PaymentSettingsActivity`:
-
-```xml
-<activity android:name="pl.przelewy24.p24lib.settings.PaymentSettingsActivity"
-          android:configChanges="orientation|keyboard|keyboardHidden"
-          android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 ```
 
 __All Activities in the library draw on the AppCompatActivity, which is why  „Theme.AppCompat.*” group styles as well as derivative styles should be used__
@@ -88,18 +74,11 @@ Below is an example of an `AndroidManifext.xml` file:
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--optional-->
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-
     <application >
 
 		<!--other activities-->
 
         <activity android:name="pl.przelewy24.p24lib.transfer.TransferActivity"
-                  android:configChanges="keyboardHidden|orientation|keyboard|screenSize"
-                  android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
-
-        <activity android:name="pl.przelewy24.p24lib.settings.PaymentSettingsActivity"
                   android:configChanges="keyboardHidden|orientation|keyboard|screenSize"
                   android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 
@@ -110,7 +89,20 @@ Below is an example of an `AndroidManifext.xml` file:
 
 ```
 
-## 2. trnDirect transaction call
+## 2. SSL Pinning
+
+The library has a Pinning SSL mechanism that can be activated globally for webview calls.
+If you want use this feature, please make sure configuration is setup before any library methods calls. Example:
+
+```java
+SdkConfig.setCertificatePinningEnabled(true);
+```
+
+**UWAGA!!**
+
+ > When activating SSL Pinning, keep in mind that the certificates embedded in the library have their validity time. Before time of their expiry, Przelewy24 will be sending out appropriate information and updating.
+
+## 3. trnDirect transaction call
 
 In order to call the transaction, the following parameters must be set using the builder class and providing the Merchant ID and the CRC key:
 
@@ -155,22 +147,6 @@ Optionally, the transaction call may be set at the Sandbox server:
 params.setSandbox(true);
 ```
 
-Yet another option is to add library settings for bank websites (mobile styles at the banks’ websites – turned on by default, should the library remember logins and passwords, should the library automatically paste sms passwords to the transaction confirmation form at the bank page):
-
-```java
-SettingsParams settingsParams = new SettingsParams();
-settingsParams.setEnableBanksRwd(true);
-settingsParams.setSaveBankCredentials(true);
-settingsParams.setReadSmsPasswords(true);
-params.setSettingsParams(settingsParams);
-```
-
-In case `setReadSmsPasswords` is set as `true`, the following should be added to the manifest:
-
-```xml
-<uses-permission android:name="android.permission.RECEIVE_SMS"/>
-```
-
 With the configurational objects complete, one may proceed to call Activity for a transaction. The initiation looks as follows:
 
 ```java
@@ -203,7 +179,7 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
 `TransferActivity` returns only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `isSuccess()` status is obtained, the application should call its own backend to check the transaction status.
 
 
-## 3. trnRequest transaction call
+## 4. trnRequest transaction call
 
 During the registration with the "trnRegister" method, additional parameters should be provided:
 - `p24_mobile_lib=1`
@@ -223,8 +199,7 @@ The transaction parameters must be set using the token of a transaction register
 ```java
 TrnRequestParams params = TrnRequestParams
                       .create("XXXXXXXXXX-XXXXXX-XXXXXX-XXXXXXXXXX")
-                      .setSandbox(true)
-                      .setSettingsParams(settingsParams);
+                      .setSandbox(true);
 ```
 
 Next, create `Intent` to call transaction `Activity` and run it:
@@ -236,7 +211,7 @@ activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 
 The transaction result should be served in the same way as in the case of "trnDirect".
 
-## 4. Express transaction call
+## 5. Express transaction call
 
 The transaction parameters must be set using the url obtained during the registration of the transaction with Express. The transaction must be registered as mobile.
 
@@ -253,7 +228,7 @@ activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 
 The transaction result should be served in the same way as in the case of "trnDirect".
 
-## 5. Passage 2.0 transaction call
+## 6. Passage 2.0 transaction call
 
 The transaction parameters must be set in the same way as for "trnDirect". A properly prepared cart object should be added:
 
