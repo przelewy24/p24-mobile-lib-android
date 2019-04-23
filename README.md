@@ -254,3 +254,82 @@ TransactionParams transactionParams = new TransactionParams.Builder()
 ```
 
 The transaction call and result parsing proceed in the same way as in the case of "trnDirect".
+
+## 7. Google Pay
+
+The data flow process using this payment method looks as follows:
+
+![](img/diagram_google_pay_eng.png)
+
+To use the Google Pay payment you must first make an additional configuration of the project:
+
+At the 'application' node, please add the 'GooglePayActivity' activity:
+
+```xml
+<activity
+    android:name="pl.przelewy24.p24lib.google_pay.GooglePayActivity"
+    android:theme="@style/Theme.AppCompat.Translucent"
+    android:configChanges="keyboardHidden|orientation|keyboard|screenSize">
+</activity>
+```
+
+and place the appropriate activation entry for the Google Pay service:
+
+```xml
+<meta-data
+    android:name="com.google.android.gms.wallet.api.enabled"
+    android:value="true" />
+```
+
+Then, in the `build.gradle` file, you must add a dependency for the Google library:
+
+`implementation 'com.google.android.gms:play-services-wallet:16.+'`
+
+
+To initiate a transaction, you must pass the transaction parameters and the GooglePayTransactionRegistrar object that is used to register the transaction:
+
+```java
+GooglePayParams params = GooglePayParams.create(MERCHANT_ID, getItemPrice(), "PLN")
+				.setSandbox(IS_SANDBOX);
+
+Intent intent = GooglePayActivity.getStartIntent(this, params, getGooglePayTrnRegistrar());
+startActivityForResult(intent, GOOGLE_PAY_REQUEST_CODE);
+```
+
+The GooglePayTransactionRegistrar interface allows you to implement the exchange of the token received from Google Pay into the P24 transaction token. When the `register` method is called, communicate with the P24 servers, pass the Google Pay payment token as the `p24_method_ref_id` parameter, and then pass the transaction token to the library using the callback method by calling the `onTransactionRegistered` method.
+
+```java
+private GooglePayTransactionRegistrar getGooglePayTrnRegistrar() {
+    return new GooglePayTransactionRegistrar() {
+        @Override
+        public void register(String methodRefId, GooglePayTransactionRegistrarCallback callback) {
+            // register transaction and retreive token
+            callback.onTransactionRegistered("P24_TRANSACTION_TOKEN");
+        }
+    };
+}
+```
+
+Result handling looks as follows:
+
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
+        if (resultCode == RESULT_OK) {
+            GooglePayResult result = GooglePayActivity.parseResult(data);
+            if (result.isError())
+                showError("Google Pay error. Code: " + result.getErrorCode());
+
+            if (result.isCompleted())
+                showSuccess("Google Pay completed");
+        } else {
+            showCancel("Google Pay canceled");
+        }
+	} 
+}
+```
+
+For more information how to handle communication with P24 servers visit here: [https://docs.przelewy24.pl/Google_Pay](https://docs.przelewy24.pl/Google_Pay).

@@ -18,11 +18,11 @@ W środowisku Android Studio możliwe jest doadnie modułu biblioteki poprzez po
 
 Kolejny krok to dodanie zależności do stworzonego modułu biblioteki poprzez modyfikację pliku `build.gradle` i umieszczenie w sekcji „dependencies” wpisu:
 
-`compile project(':p24lib')`
+`implementation project(':p24lib')`
 
-Biblioteka wykorzystuje bibliotekę AppCompat v7, dlatego należy różnież dodać zależność:
+Biblioteka wykorzystuje bibliotekę AndroidX, dlatego należy różnież dodać zależność:
 
-`compile 'com.android.support:appcompat-v7:26.+'`
+`debugImplementation 'androidx.appcompat:appcompat:+'`
 
 Przykładowo sekcja „dependencies” powinna wyglądać tak:
 
@@ -30,8 +30,8 @@ Przykładowo sekcja „dependencies” powinna wyglądać tak:
 
 dependencies {
 	//other dependencies
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile project(':p24Lib')
+    implementation project(':p24Lib')
+    debugImplementation 'androidx.appcompat:appcompat:1.0.0-beta01'
 }
 
 ```
@@ -257,3 +257,82 @@ TransactionParams transactionParams = new TransactionParams.Builder()
 ```
 
 Wywołanie transakcji oraz parsowanie wyniku jest realizowane identycznie jak dla wywołania "trnDirect".
+
+## 7. Google Pay
+
+Proces przepływu danych przy użyciu tej metody płatności wygląda następująco:
+
+![](img/diagram_google_pay_eng.png)
+
+By móc korzystać z płatności Google Pay należy najpierw dokonać dodatkowej konfiguracji projektu:
+
+W węźle `application` proszę dodać aktywność `GooglePayActivity`:
+
+```xml
+<activity
+    android:name="pl.przelewy24.p24lib.google_pay.GooglePayActivity"
+    android:theme="@style/Theme.AppCompat.Translucent"
+    android:configChanges="keyboardHidden|orientation|keyboard|screenSize">
+</activity>
+```
+
+oraz umieścić odpowiedni wpis aktywujący usługę Google Pay:
+
+```xml
+<meta-data
+    android:name="com.google.android.gms.wallet.api.enabled"
+    android:value="true" />
+```
+
+Następnie w pliku `build.gradle` wymagane jest dodanie zależności do biblioteki Google:
+
+`implementation 'com.google.android.gms:play-services-wallet:16.+'`
+
+
+By zainicjować transakcję należy przekazać parametry transakcji oraz obiekt GooglePayTransactionRegistrar, który służy do rejestracji transakcji:
+
+```java
+GooglePayParams params = GooglePayParams.create(MERCHANT_ID, getItemPrice(), "PLN")
+				.setSandbox(IS_SANDBOX);
+
+Intent intent = GooglePayActivity.getStartIntent(this, params, getGooglePayTrnRegistrar());
+startActivityForResult(intent, GOOGLE_PAY_REQUEST_CODE);
+```
+
+Interfejs GooglePayTransactionRegistrar pozwala na implementację wymiany tokenu otrzymanego z Google Pay na token transkacji P24. W momencie wywołania metody `register` należy skomunikować się z serwerami P24, przekazać token płatności Google Pay jako parametr `p24_method_ref_id`, a następnie tak uzyskany token transakcji przekazać do biblioteki za pomocą callbacka, wywołując metodę `onTransactionRegistered`.
+
+```java
+private GooglePayTransactionRegistrar getGooglePayTrnRegistrar() {
+    return new GooglePayTransactionRegistrar() {
+        @Override
+        public void register(String methodRefId, GooglePayTransactionRegistrarCallback callback) {
+            // register transaction and retreive token
+            callback.onTransactionRegistered("P24_TRANSACTION_TOKEN");
+        }
+    };
+}
+```
+
+Obsługa rezultatu wygląda następująco:
+
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == GOOGLE_PAY_REQUEST_CODE) {
+        if (resultCode == RESULT_OK) {
+            GooglePayResult result = GooglePayActivity.parseResult(data);
+            if (result.isError())
+                showError("Google Pay error. Code: " + result.getErrorCode());
+
+            if (result.isCompleted())
+                showSuccess("Google Pay completed");
+        } else {
+            showCancel("Google Pay canceled");
+        }
+	} 
+}
+```
+
+Więcej informacji o rejestrowaniu transakcji przez backend tutaj: [https://docs.przelewy24.pl/Google_Pay](https://docs.przelewy24.pl/Google_Pay).
