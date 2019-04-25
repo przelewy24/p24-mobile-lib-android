@@ -20,9 +20,9 @@ The next step is to add a dependency to the created library module by modifying 
 
 `compile project(':p24lib')`
 
-Since the library uses the AppCompat v7 library, the following dependency must be added:
+Since the library uses the AndroidX library, the following dependency must be added:
 
-`compile 'com.android.support:appcompat-v7:26.+'`
+`implementation 'androidx.appcompat:appcompat:+'`
 
 Below is an example of a „dependencies” section:
 
@@ -30,8 +30,8 @@ Below is an example of a „dependencies” section:
 
 dependencies {
 	//other dependencies
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile project(':p24Lib')
+    implementation project(':p24Lib')
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
 }
 
 ```

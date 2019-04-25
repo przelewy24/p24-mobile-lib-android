@@ -31,7 +31,7 @@ Przykładowo sekcja „dependencies” powinna wyglądać tak:
 dependencies {
 	//other dependencies
     implementation project(':p24Lib')
-    debugImplementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
 }
 
 ```
