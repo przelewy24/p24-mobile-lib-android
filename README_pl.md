@@ -1,4 +1,5 @@
 # Dokumentacja biblioteki Przelewy24 - Android
+![](https://raw.githubusercontent.com/przelewy24/p24-mobile-lib-android/master/libVerImg.svg?sanitize=true)
 
 Ogólne informacje o działaniu bibliotek mobilnych w systemie Przelewy24 znajdziesz pod adresem:
 
@@ -22,7 +23,15 @@ Kolejny krok to dodanie zależności do stworzonego modułu biblioteki poprzez m
 
 Biblioteka wykorzystuje bibliotekę AndroidX, dlatego należy różnież dodać zależność:
 
-`debugImplementation 'androidx.appcompat:appcompat:+'`
+`implementation 'androidx.appcompat:appcompat:+'`
+
+W przypadku używania SafetyNet należy dodać:
+
+`implementation 'com.google.android.gms:play-services-wallet:16.0.1'`
+
+Przy integracji z GooglePlay należy dodać: 
+
+`implementation 'com.google.android.gms:play-services-safetynet:+'`
 
 Przykładowo sekcja „dependencies” powinna wyglądać tak:
 
@@ -31,9 +40,19 @@ Przykładowo sekcja „dependencies” powinna wyglądać tak:
 dependencies {
 	//other dependencies
     implementation project(':p24Lib')
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'com.google.android.gms:play-services-wallet:16.0.1' //necessary if google pay used
+    implementation 'com.google.android.gms:play-services-safetynet:+' //necessary if safetynet function enabled
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
 
+```
+
+### Proguard
+
+Gdy docelowy projekt nie korzysta z GooglePlay do pliku proguard nalezy dodać wpis:
+
+```proguard
+-dontwarn com.google.android.gms.wallet.**
 ```
 
 ### Definiowanie pliku AndroidManifest

@@ -1,4 +1,5 @@
 # Przelewy24 library documentation - Android
+![](https://raw.githubusercontent.com/przelewy24/p24-mobile-lib-android/master/libVerImg.svg?sanitize=true)
 
 For general information on the operation of Przelewy24 mobile libraries, visit:
 
@@ -24,6 +25,14 @@ Since the library uses the AndroidX library, the following dependency must be ad
 
 `implementation 'androidx.appcompat:appcompat:+'`
 
+When using SafetyNet you need add:
+
+`implementation 'com.google.android.gms:play-services-wallet:16.0.1'`
+
+When integrating with GooglePlay you need add:
+
+`implementation 'com.google.android.gms:play-services-safetynet:+'`
+
 Below is an example of a „dependencies” section:
 
 ```gradle
@@ -31,9 +40,19 @@ Below is an example of a „dependencies” section:
 dependencies {
 	//other dependencies
     implementation project(':p24Lib')
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'com.google.android.gms:play-services-wallet:16.0.1' //necessary if google pay used
+    implementation 'com.google.android.gms:play-services-safetynet:+' //necessary if safetynet function enabled
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
 
+```
+
+### Proguard
+
+If the target project don't use GooglePlay, the following entry should be added to the proguard file:
+
+```proguard
+-dontwarn com.google.android.gms.wallet.**
 ```
 
 ### Definition of AndroidManifest file
