@@ -1,14 +1,5 @@
-Version 3.0.7
+### Version 3.4.4
+- Add isExitOnBackButtonEnabled flag
 
-- memory optimalization
-
-Version 3.0.5
-
-- Fixes for Deutsche Bank
-- Add trnRegister method
-
-Version 3.0.3
-
-- New version of library API
-- Add Passage 2.0
-- Add Ekspres
+### Verstion 3.4.5
+- Change type of Google merchantId variable
