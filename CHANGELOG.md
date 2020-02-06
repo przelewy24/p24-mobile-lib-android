@@ -3,3 +3,7 @@
 
 ### Verstion 3.4.5
 - Change type of Google merchantId variable
+
+### Verstion 3.4.6
+- Change GooglePay price format
+
