@@ -120,7 +120,15 @@ SdkConfig.setCertificatePinningEnabled(true);
 
  > Aktywując SSL Pinning należy mieć na uwadze, że zaszyte w bibliotece certyfikaty mają swój czas ważności. Gdy będzie się zbliżał czas ich wygaśnięcia, Przelewy24 poinformują o tym oraz udostępnią odpowiednią aktualizację.
 
-## 3. Wywołanie transakcji trnDirect
+## 3. Płatność podzielona (split payment)
+
+Funkcja jest dostępna dla wywołań transfer (trnRequest, trnDirect, express). By ją aktywować należy ustawić odpowiednią flagę przed wywołaniem transakcji:
+
+```java
+SdkConfig.setSplitPaymentEnabled(true);
+```
+
+## 4. Wywołanie transakcji trnDirect
 
 W tym celu należy ustawić parametry transakcji korzystając z klasy buildera, podając Merchant Id i klucz do CRC:
 
@@ -196,7 +204,7 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
 ```
 `TransferActivity` zwraca tylko informację o tym, że transakcja się zakończyła. Nie zawsze oznacza to czy transakcja jest zweryfikowana przez serwer partnera, dlatego za każdym razem po uzyskaniu statusu `isSuccess()` aplikacja powinna odpytać własny backend o status transakcji.
 
-## 4. Wywołanie transakcji trnRequest
+## 5. Wywołanie transakcji trnRequest
 
 Podczas rejestracji transakcji metodą "trnRegister" należy podać dodatkowe parametry:
 - `p24_mobile_lib=1`
@@ -233,7 +241,7 @@ activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 
 Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
-## 5. Wywołanie transakcji Ekspres
+## 6. Wywołanie transakcji Ekspres
 
 Należy ustawić parametry transakcji podając url uzyskany podczas rejestracji transakcji w systemie Ekspres. Transakcja musi być zarejestrowana jako mobilna.
 
@@ -250,7 +258,7 @@ activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 
 Rezultat transakcji należy obsłużyć identycznie jak dla wywołania "trnDirect".
 
-## 6. Wywołanie transakcji z Pasażem 2.0
+## 7. Wywołanie transakcji z Pasażem 2.0
 
 Należy ustawić parametry transakcji identycznie jak dla wywołania "trnDirect", dodając odpowiednio przygotowany obiekt koszyka:
 
@@ -277,7 +285,7 @@ TransactionParams transactionParams = new TransactionParams.Builder()
 
 Wywołanie transakcji oraz parsowanie wyniku jest realizowane identycznie jak dla wywołania "trnDirect".
 
-## 7. Google Pay
+## 8. Google Pay
 
 Proces przepływu danych przy użyciu tej metody płatności wygląda następująco:
 

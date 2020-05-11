@@ -121,7 +121,15 @@ SdkConfig.setCertificatePinningEnabled(true);
 
  > When activating SSL Pinning, keep in mind that the certificates embedded in the library have their validity time. Before time of their expiry, Przelewy24 will be sending out appropriate information and updating.
 
-## 3. trnDirect transaction call
+## 3. Split payment
+
+The function is available for transfer calls (trnRequest, trnDirect, express). To activate, use the appropriate flag before the transaction request:
+
+```java
+SdkConfig.setSplitPaymentEnabled(true);
+```
+
+## 4. trnDirect transaction call
 
 In order to call the transaction, the following parameters must be set using the builder class and providing the Merchant ID and the CRC key:
 
@@ -198,7 +206,7 @@ protected void onActivityResult(int reqCode, int resCode, Intent data) {
 `TransferActivity` returns only information regarding the completion of the transaction. It need not mean that the transaction has been verified by the partner’s server. That is why, each time the `isSuccess()` status is obtained, the application should call its own backend to check the transaction status.
 
 
-## 4. trnRequest transaction call
+## 5. trnRequest transaction call
 
 During the registration with the "trnRegister" method, additional parameters should be provided:
 - `p24_mobile_lib=1`
@@ -230,7 +238,7 @@ activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 
 The transaction result should be served in the same way as in the case of "trnDirect".
 
-## 5. Express transaction call
+## 6. Express transaction call
 
 The transaction parameters must be set using the url obtained during the registration of the transaction with Express. The transaction must be registered as mobile.
 
@@ -247,7 +255,7 @@ activity.startActivityForResult(intent, TRANSACTION_REQUEST_CODE);
 
 The transaction result should be served in the same way as in the case of "trnDirect".
 
-## 6. Passage 2.0 transaction call
+## 7. Passage 2.0 transaction call
 
 The transaction parameters must be set in the same way as for "trnDirect". A properly prepared cart object should be added:
 
@@ -274,7 +282,7 @@ TransactionParams transactionParams = new TransactionParams.Builder()
 
 The transaction call and result parsing proceed in the same way as in the case of "trnDirect".
 
-## 7. Google Pay
+## 8. Google Pay
 
 The data flow process using this payment method looks as follows:
 
