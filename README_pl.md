@@ -11,7 +11,7 @@ Przykład implementacji biblioteki:
 
 ## 1. Konfiguracja projektu
 
-Konfigurację należy rozpocząć od ustawienia wartości `minSdkVersion=16` w pliku `build.gradle`
+Konfigurację należy rozpocząć od ustawienia wartości `minSdkVersion=19` w pliku `build.gradle`
 
 ### Dodawanie zależności
 

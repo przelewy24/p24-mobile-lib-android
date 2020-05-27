@@ -11,7 +11,7 @@ To see implementation example please check the example project:
 
 ## 1. Project configuration
 
-The first step is to set the value `minSdkVersion=16` in file `build.gradle`
+The first step is to set the value `minSdkVersion=19` in file `build.gradle`
 
 ### Adding dependencies
 
