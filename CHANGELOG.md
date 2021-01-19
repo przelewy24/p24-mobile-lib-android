@@ -7,3 +7,6 @@
 ### Verstion 3.4.6
 - Change GooglePay price format
 
+### Version 3.5.2
+- UI changes
+
