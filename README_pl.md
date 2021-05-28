@@ -109,8 +109,7 @@ Przykładowo plik `AndroidManifext.xml` powinien wyglądać tak:
 
 ## 2. SSL Pinning
 
-Biblioteka posiada mechanizm SSL Pinningu, który można aktywować globalnie dla wywołań webview.
-Aby funkcja działała należy upewnić się, że przed wywołaniem jakiejkolwiek metody biblioteki jest ona odpowiedno zkonfigurowana. Przykład:
+Biblioteka posiada mechanizm SSL Pinningu, który można aktywować globalnie - aby funkcja działała należy upewnić się, że przed wywołaniem jakiejkolwiek metody biblioteki jest ona odpowiedno skonfigurowana. Przykład:
 
 ```java
 SdkConfig.setCertificatePinningEnabled(true);
