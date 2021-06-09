@@ -68,7 +68,7 @@ Next, in `application` section, add `TransferActivity`:
 
 ```xml
 <activity android:name=„pl.przelewy24.p24lib.transfer.TransferActivity"
-          android:configChanges="orientation|keyboard|keyboardHidden"
+          android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
           android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
 ```
 
@@ -77,7 +77,7 @@ __All Activities in the library draw on the AppCompatActivity, which is why  „
 In the case of default Activity settings, the WebView will get reloaded during the rotation of the library display screen, which may cause a return from the bank’s website to the list of payment forms and render further transaction processing impossible. In order to prevent the reloading of the library window, the following parameter must be set:
 
 ```xml
-android:configChanges="orientation|keyboard|keyboardHidden"
+android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
 ```
 Below is an example of an `AndroidManifext.xml` file:
 

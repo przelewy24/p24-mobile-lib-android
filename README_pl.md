@@ -68,7 +68,7 @@ Następnie w węźle `application` dodać aktywność `TransferActivity`:
 
 ```xml
 <activity android:name=„pl.przelewy24.p24lib.transfer.TransferActivity"
-          android:configChanges="orientation|keyboard|keyboardHidden"
+          android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
           android:theme="@style/Theme.AppCompat.Light.DarkActionBar”/>
 ```
 
@@ -77,7 +77,7 @@ __Wszystkie Activity w bibliotece dziedziczą po AppCompatActivity, dlatego nale
 Przy domyślnych ustawieniach Activity podczas obrotu ekranu biblioteki nastąpi przeładowanie WebView, co może powodować powrót ze strony banku do listy form płatności i uniemożliwić sfinalizowanie transakcji. Aby okno biblioteki nie przeładowywało się konieczne jest ustawienie parametru:
 
 ```xml
-android:configChanges="orientation|keyboard|keyboardHidden"
+android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
 ```
 Przykładowo plik `AndroidManifext.xml` powinien wyglądać tak:
 
