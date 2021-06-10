@@ -47,6 +47,26 @@ dependencies {
 
 ```
 
+Alternatively, the P24 library can be added to the project using Maven - in this case add the line to the top of the `build.gradle` file:
+
+`apply from: 'https://mobile.przelewy24.pl/p24lib.gradle'`
+
+Next, at `repositories` section, add value `p24()`: 
+
+```gradle
+repositories {
+    google()
+    jcenter()
+    p24()
+}
+```
+
+At the end, at `dependencies` section, add entry `implementation "pl.przelewy24:p24lib:+"`:
+
+dependencies {
+    implementation "pl.przelewy24:p24lib:+"
+}
+
 ### Proguard
 
 If the target project don't use GooglePlay, the following entry should be added to the proguard file:
