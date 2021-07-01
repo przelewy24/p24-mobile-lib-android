@@ -379,4 +379,4 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 }
 ```
 
-For more information how to handle communication with P24 servers visit here: [https://docs.przelewy24.pl/Google_Pay](https://docs.przelewy24.pl/Google_Pay).
+For more information how to handle communication with P24 servers visit here: [https://developers.przelewy24.pl/#tag/GPay-Description](https://developers.przelewy24.pl/#tag/GPay-Description).

@@ -381,4 +381,4 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 }
 ```
 
-Więcej informacji o rejestrowaniu transakcji przez backend tutaj: [https://docs.przelewy24.pl/Google_Pay](https://docs.przelewy24.pl/Google_Pay).
+Więcej informacji o rejestrowaniu transakcji przez backend tutaj: [https://developers.przelewy24.pl/#tag/GPay-Description](https://developers.przelewy24.pl/#tag/GPay-Description).
