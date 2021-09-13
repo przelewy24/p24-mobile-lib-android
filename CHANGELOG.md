@@ -10,3 +10,5 @@
 ### Version 3.5.2
 - UI changes
 
+### Version 3.5.24
+- Update certs
