@@ -1,14 +1,20 @@
-### Version 3.4.4
-- Add isExitOnBackButtonEnabled flag
+### Version 3.5.29
+- Add protection for Zip Path Traversal Vulnerability
 
-### Verstion 3.4.5
-- Change type of Google merchantId variable
+### Version 3.5.28
+- Update certs
 
-### Verstion 3.4.6
-- Change GooglePay price format
+### Version 3.5.24
+- Update certs
 
 ### Version 3.5.2
 - UI changes
 
-### Version 3.5.24
-- Update certs
+### Verstion 3.4.6
+- Change GooglePay price format
+
+### Verstion 3.4.5
+- Change type of Google merchantId variable
+
+### Version 3.4.4
+- Add isExitOnBackButtonEnabled flag
