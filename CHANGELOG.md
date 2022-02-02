@@ -1,3 +1,6 @@
+### Version 3.5.30
+- Loading dialog error fix
+
 ### Version 3.5.29
 - Add protection for Zip Path Traversal Vulnerability
 
