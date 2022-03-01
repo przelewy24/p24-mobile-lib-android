@@ -1,3 +1,6 @@
+### Version 3.5.31
+- Add ability to hide shipping address in Google Pay sheet
+
 ### Version 3.5.30
 - Loading dialog error fix
 
