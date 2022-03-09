@@ -1,3 +1,6 @@
+### Version 3.5.32
+- Fix problem with RPC no internet dialog
+
 ### Version 3.5.31
 - Add ability to hide shipping address in Google Pay sheet
 
