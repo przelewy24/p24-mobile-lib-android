@@ -1,7 +1,7 @@
-### Version 3.5.33
+### Version 3.5.53
 - Update certificates
 
-### Version 3.5.32
+### Version 3.5.52
 - Fix problem with RPC no internet dialog
 
 ### Version 3.5.31
