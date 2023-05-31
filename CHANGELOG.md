@@ -1,3 +1,7 @@
+### Version 3.5.56
+- Update certificates
+- Remove safetynet
+
 ### Version 3.5.54
 - Update certificates
 
