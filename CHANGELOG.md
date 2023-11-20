@@ -1,3 +1,6 @@
+### Version 3.5.57
+- Update GooglePay dependencies
+
 ### Version 3.5.56
 - Update certificates
 - Remove safetynet
