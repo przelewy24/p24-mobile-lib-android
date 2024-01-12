@@ -1,3 +1,6 @@
+### Version 3.5.58
+- Bugfix for NullPointerException in TransferActivity
+
 ### Version 3.5.57
 - Update GooglePay dependencies
 
