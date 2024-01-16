@@ -1,3 +1,6 @@
+### Version 3.5.59
+- Bugfix for NullPointerException in GooglePayActivity
+
 ### Version 3.5.58
 - Bugfix for NullPointerException in TransferActivity
 
