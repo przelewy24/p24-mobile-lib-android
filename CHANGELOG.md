@@ -1,3 +1,6 @@
+### Version 3.5.60
+- Bugfix for RPCActivity
+
 ### Version 3.5.59
 - Bugfix for NullPointerException in GooglePayActivity
 
