@@ -1,3 +1,6 @@
+### Version 3.5.61
+- Add support for edge to edge
+
 ### Version 3.5.60
 - Bugfix for RPCActivity
 
