@@ -1,3 +1,6 @@
+### Version 3.5.62
+- Update certificates for SSL Pinning
+
 ### Version 3.5.61
 - Add support for edge to edge
 
