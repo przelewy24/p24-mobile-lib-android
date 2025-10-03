@@ -1,3 +1,6 @@
+### Version 3.5.64
+- Add ability to pass Google Pay merchantId as String
+
 ### Version 3.5.63
 - Bugfix for SSL Pinning
 
