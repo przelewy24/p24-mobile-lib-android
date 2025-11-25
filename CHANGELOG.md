@@ -1,3 +1,8 @@
+### Version 3.5.66
+- Bugfix for edge to edge support
+- Bump min Android SDK version to 23
+- Bump Google Play Services Wallet library version to 19.5.0
+
 ### Version 3.5.64
 - Add ability to pass Google Pay merchantId as String
 
