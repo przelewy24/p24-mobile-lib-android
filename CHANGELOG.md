@@ -1,3 +1,6 @@
+### Version 3.5.67
+- Fix for edge to edge support
+
 ### Version 3.5.66
 - Bugfix for edge to edge support
 - Bump min Android SDK version to 23
