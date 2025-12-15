@@ -1,3 +1,6 @@
+### Version 3.5.69
+- Fix for edge to edge support in Google Pay screen
+
 ### Version 3.5.68
 - Add edge to edge support for Google Pay screen
 
