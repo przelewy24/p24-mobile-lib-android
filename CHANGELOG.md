@@ -1,3 +1,6 @@
+### Version 3.5.70
+- Update proguard rules
+
 ### Version 3.5.69
 - Fix for edge to edge support in Google Pay screen
 
