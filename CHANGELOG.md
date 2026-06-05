@@ -1,3 +1,6 @@
+### Version 3.5.71
+- Fix crash on Android 16 when connection error dialog is shown in GooglePayActivity
+
 ### Version 3.5.70
 - Update proguard rules
 
