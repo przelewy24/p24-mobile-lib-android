@@ -1,3 +1,6 @@
+### Version 3.5.72
+- Fix Przelewy24/BLIK logo covered by the status bar on the transfer screen
+
 ### Version 3.5.71
 - Fix crash on Android 16 when connection error dialog is shown in GooglePayActivity
 
