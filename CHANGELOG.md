@@ -1,3 +1,6 @@
+### Version 3.5.74
+- Add ability to allow Google Pay device tokens
+
 ### Version 3.5.72
 - Fix Przelewy24/BLIK logo covered by the status bar on the transfer screen
 
